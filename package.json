@@ -1,6 +1,6 @@
 {
   "name": "@dependency/listDirectoryContent",
-  "main": "./source/entrypoint.js",
+  "main": "./source/script.js",
   "version": "1.0.0",
   "dependencies": {
   },
