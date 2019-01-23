@@ -2,12 +2,11 @@
   "name": "@dependency/listDirectoryContent",
   "main": "./source/entrypoint.js",
   "version": "1.0.0",
-  "scripts": {
-  },
   "dependencies": {
   },
-  "workspaces": [
-  ],
-  "private": true
-
+  "devDependencies": {
+    "@dependency/scriptManager": "https://github.com/AppScriptIO/scriptManager",
+    "@dependency/javascriptTestRunner": "https://github.com/AppScriptIO/javascriptTestRunner",
+    "@dependency/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation"
+  }
 }

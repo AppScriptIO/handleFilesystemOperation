@@ -1,4 +1,4 @@
 // Transpilation - babelJSCompiler
 require('@dependency/javascriptTranspilation')({ babelConfigurationFile: 'serverRuntime.BabelConfig.js' })
 
-module.exports = require('./script.js')
+module.exports = require('./')
