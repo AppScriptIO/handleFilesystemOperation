@@ -1,12 +1,12 @@
 {
   "name": "@dependency/listDirectoryContent",
-  "main": "./source/script.js",
+  "main": "./source/entrypoint/api/transpilation.js",
   "version": "1.0.0",
   "dependencies": {
   },
   "devDependencies": {
     "@dependency/scriptManager": "https://github.com/AppScriptIO/scriptManager",
-    "@dependency/javascriptTestRunner": "https://github.com/AppScriptIO/javascriptTestRunner",
+    "@dependency/deploymentScript": "https://github.com/AppScriptIO/deploymentScript",
     "@dependency/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation"
   }
 }
