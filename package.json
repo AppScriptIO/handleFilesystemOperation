@@ -2,6 +2,9 @@
   "name": "@dependency/listDirectoryContent",
   "version": "1.0.1",
   "main": "./entrypoint/programmaticAPI",
+  "scripts": {
+    "buildAndRelease": "yarn run scriptManager shouldCompileScript=true JSProject/buildAndRelease \".moduleProject({})\""
+  },
   "dependencies": {},
   "devDependencies": {
     "@dependency/deploymentScript": "https://github.com/AppScriptIO/deploymentScript#semver:^1.x.x",
