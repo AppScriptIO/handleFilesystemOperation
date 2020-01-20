@@ -1,5 +1,5 @@
-# listDirectoryContent
-returns array of files that exist in a directory. 
+# resolveAndLookupPath
+Deals with file lookup according to set rules, including directory content listing. Providing different algorithms for modules to use.
 
 ___
 

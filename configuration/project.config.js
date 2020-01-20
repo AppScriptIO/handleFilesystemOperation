@@ -36,7 +36,7 @@ const ownConfig = {
         path.relative(ownConfig.directory.root, ownConfig.directory.source),
       ]
     },
-    repositoryURL: 'https://github.com/AppScriptIO/listDirectoryContent',
+    repositoryURL: 'https://github.com/AppScriptIO/resolveAndLookupPath',
   },
 }
 
