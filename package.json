@@ -1,6 +1,6 @@
 {
 	"name": "@dependency/resolveAndLookupPath",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"main": "./entrypoint/programmaticAPI",
 	"scripts": {
 		"buildAndRelease": "yarn run scriptManager shouldCompileScript=true @dependency/deploymentScript \".buildAndRelease.moduleProject({})\"",
