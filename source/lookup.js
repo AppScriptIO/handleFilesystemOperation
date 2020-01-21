@@ -110,4 +110,3 @@ export function resolveAndLookupFile({
   fileArray = [...new Set(fileArray)] // remove duplicate enteries.
   return fileArray
 }
-

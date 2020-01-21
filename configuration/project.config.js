@@ -34,7 +34,7 @@ const ownConfig = {
     get compile() {
       return [path.relative(ownConfig.directory.root, ownConfig.directory.source)]
     },
-    repositoryURL: 'https://github.com/AppScriptIO/resolveAndLookupPath',
+    repositoryURL: 'https://github.com/AppScriptIO/handleFilesystemOperation',
   },
 }
 
