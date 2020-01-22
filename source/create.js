@@ -1,5 +1,5 @@
-import { constants: filesystemConstants, promises: filesystem } from 'fs'
-import  path from 'path'
+import { constants as filesystemConstants, promises as filesystem } from 'fs'
+import path from 'path'
 
 export async function recursiveCreateDirectory({ directoryPath }) {
   await filesystem
