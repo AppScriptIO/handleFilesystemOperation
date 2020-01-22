@@ -1,7 +1,7 @@
-const { constants: filesystemConstants, promises: filesystem } = require('fs'),
-  path = require('path')
+import { constants: filesystemConstants, promises: filesystem } from 'fs'
+import  path from 'path'
 
-async function recursiveCreateDirectory({ directoryPath }) {
+export async function recursiveCreateDirectory({ directoryPath }) {
   await filesystem
     .mkdir(directoryPath)
     .then(() => console.log(`\tCreated directory root ${directoryPath}`))
@@ -15,8 +15,4 @@ async function recursiveCreateDirectory({ directoryPath }) {
         throw error
       }
     })
-}
-
-module.exports = {
-  recursiveCreateDirectory,
 }

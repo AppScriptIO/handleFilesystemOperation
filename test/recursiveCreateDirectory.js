@@ -3,9 +3,8 @@ import path from 'path'
 import { assert } from 'chai'
 import filesystem from 'fs'
 import deleteModule from 'del'
-import configuration from '../setup/configuration'
-import { recursiveCreateDirectory } from './entrypoint.js'
-const testAssetPath = path.join(configuration.directory.application.containerAbsolutePath, 'test/asset'),
+import { recursiveCreateDirectory } from '../source/create.js'
+const testAssetPath = path.join(__dirname, 'asset'),
   testTemporaryFile = path.join(testAssetPath, 'temporary')
 
 describe('function recursiveCreateDirectory:', function() {
