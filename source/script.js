@@ -1,2 +1,3 @@
-export * from './create.js'
-export * from './lookup.js'
+"use strict";Object.defineProperty(exports, "__esModule", { value: true });var _create = require("./create.js");Object.keys(_create).forEach(function (key) {if (key === "default" || key === "__esModule") return;Object.defineProperty(exports, key, { enumerable: true, get: function () {return _create[key];} });});
+var _lookup = require("./lookup.js");Object.keys(_lookup).forEach(function (key) {if (key === "default" || key === "__esModule") return;Object.defineProperty(exports, key, { enumerable: true, get: function () {return _lookup[key];} });});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NvdXJjZS9zY3JpcHQuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IjJFQUFBO0FBQ0EiLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgKiBmcm9tICcuL2NyZWF0ZS5qcydcbmV4cG9ydCAqIGZyb20gJy4vbG9va3VwLmpzJ1xuIl19

@@ -1,112 +1,113 @@
-import filesystem from 'fs'
-import path from 'path'
-import assert from 'assert'
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.listContentSingleContent = listContentSingleContent;exports.listFileRecursively = listFileRecursively;exports.listFileWithExtension = listFileWithExtension;exports.resolveAndLookupFile = resolveAndLookupFile;exports.listContent = void 0;var _fs = _interopRequireDefault(require("fs"));
+var _path = _interopRequireDefault(require("path"));
 
-/** get direcotry contents list 
- @return array of files that exist in a directory. 
- */
-export const listContent = ({
-  dir, // single path or array of directory paths.
+
+
+
+
+const listContent = ({
+  dir,
   filelist = [],
-  option,
-} = {}) => {
-  if (!Array.isArray(dir)) dir = [dir] // in case a single string, convert it to array to work with the function.
+  option } =
+{}) => {
+  if (!Array.isArray(dir)) dir = [dir];
 
   for (let directoryPath of dir) {
-    filelist = filelist.concat(listContentSingleContent({ directoryPath, option }))
+    filelist = filelist.concat(listContentSingleContent({ directoryPath, option }));
   }
 
-  return filelist
-}
+  return filelist;
+};exports.listContent = listContent;
 
-export function listContentSingleContent({
+function listContentSingleContent({
   directoryPath,
   filelist = [],
   option = {
-    recursive: false,
-  },
-}) {
-  if (!filesystem.existsSync(directoryPath)) return filelist
-  filesystem.readdirSync(directoryPath).forEach(content => {
+    recursive: false } })
+
+{
+  if (!_fs.default.existsSync(directoryPath)) return filelist;
+  _fs.default.readdirSync(directoryPath).forEach(content => {
     if (option.recursive) {
-      filelist = filesystem.statSync(path.join(directoryPath, content)).isDirectory() ? listContent(path.join(directoryPath, content), filelist) : filelist.push(content)
+      filelist = _fs.default.statSync(_path.default.join(directoryPath, content)).isDirectory() ? listContent(_path.default.join(directoryPath, content), filelist) : filelist.push(content);
     } else {
-      filelist.push(content)
+      filelist.push(content);
     }
-  })
-  return filelist
+  });
+  return filelist;
 }
 
-// returns all files in nested directory.
-export function listFileRecursively({ directory, ignoreRegex = [new RegExp(/node_modules/), new RegExp(/.git/)] }) {
-  let results = []
-  let list = filesystem.readdirSync(directory)
+
+function listFileRecursively({ directory, ignoreRegex = [new RegExp(/node_modules/), new RegExp(/.git/)] }) {
+  let results = [];
+  let list = _fs.default.readdirSync(directory);
   list.forEach(filename => {
-    let filepath = path.join(directory, filename)
-    // check if the path should be ignored
+    let filepath = _path.default.join(directory, filename);
+
     let shouldIgnore = ignoreRegex.some(regex => {
-      return filepath.match(regex)
-    })
-    if (shouldIgnore) return
-    let stat
+      return filepath.match(regex);
+    });
+    if (shouldIgnore) return;
+    let stat;
     try {
-      stat = filesystem.statSync(filepath)
+      stat = _fs.default.statSync(filepath);
     } catch (error) {
-      return // skip iteration on failed seaches.
+      return;
     }
-    if (stat && stat.isDirectory()) results = results.concat(listFileRecursively({ directory: filepath }))
-    else results.push({ name: filename, path: filepath }) // create object
-  })
-  return results
+    if (stat && stat.isDirectory()) results = results.concat(listFileRecursively({ directory: filepath }));else
+    results.push({ name: filename, path: filepath });
+  });
+  return results;
 }
 
-// interface for listFieRecusively function that returns an array of file paths, and filters files with the specified extension.
-export function listFileWithExtension({ directory, extension = [], ignoreRegex = [] }) {
-  if (!Array.isArray(extension)) extension = [extension] // support array or string
-  return listFileRecursively({ directory })
-    .filter(file => {
-      let c1 = extension.some(suffix => file.name.substr(-suffix.length) === suffix) // Only keep the files with the extension
-      let c2 = ignoreRegex.some(regex => file.path.match(regex)) // filter files matching ignore regex
-      return c1 && !c2
-    })
-    .reduce((accumulator, currentValue) => {
-      accumulator.push(currentValue.path)
-      return accumulator
-    }, [])
+
+function listFileWithExtension({ directory, extension = [], ignoreRegex = [] }) {
+  if (!Array.isArray(extension)) extension = [extension];
+  return listFileRecursively({ directory }).
+  filter(file => {
+    let c1 = extension.some(suffix => file.name.substr(-suffix.length) === suffix);
+    let c2 = ignoreRegex.some(regex => file.path.match(regex));
+    return c1 && !c2;
+  }).
+  reduce((accumulator, currentValue) => {
+    accumulator.push(currentValue.path);
+    return accumulator;
+  }, []);
 }
 
-/** Resolve test file paths from a list of direcotyr and file paths */
-export function resolveAndLookupFile({
-  pathArray /** relative or absolute paths */,
-  basePath /** the base path for relative paths */,
+
+function resolveAndLookupFile({
+  pathArray,
+  basePath,
   fileExtension,
-  ignoreRegex = [path.join(basePath, 'temporary'), path.join(basePath, 'distribution')] /*can contain regex or paths*/,
-}) {
-  pathArray = [...new Set(pathArray)] // remove duplicate enteries.
+  ignoreRegex = [_path.default.join(basePath, 'temporary'), _path.default.join(basePath, 'distribution')] })
+{
+  pathArray = [...new Set(pathArray)];
 
-  // ignore temporary transpilation files to prevent watch event emission loop when inspector debugging and auto attach for debugger.
-  // TODO: Read .ignore files and ignore them in the watch list to prevent change callback triggering.
-  ignoreRegex = ignoreRegex
-    // TODO: verify regex not ignoring files it supposed to keep and ignoring others.
-    .filter(ignore => !pathArray.some(inputPath => inputPath.includes(ignore))) // prevent igonring files provided as input that are supposed to be added and lookedup
-    .map(item => (item instanceof RegExp ? item : new RegExp(`${item}`))) // create regex from paths
 
-  /* List all files in a directory recursively */
-  console.log(`• Searching for ${JSON.stringify(fileExtension)} extension files, in path ${JSON.stringify(pathArray)}.`)
-  let fileArray = []
+
+  ignoreRegex = ignoreRegex.
+
+  filter(ignore => !pathArray.some(inputPath => inputPath.includes(ignore))).
+  map(item => item instanceof RegExp ? item : new RegExp(`${item}`));
+
+
+  console.log(`• Searching for ${JSON.stringify(fileExtension)} extension files, in path ${JSON.stringify(pathArray)}.`);
+  let fileArray = [];
   pathArray.forEach(currentPath => {
-    currentPath = !path.isAbsolute(currentPath) ? path.join(basePath, currentPath) : currentPath // resolve to absolute path
-    console.log(`• Test path: ${currentPath}`)
+    currentPath = !_path.default.isAbsolute(currentPath) ? _path.default.join(basePath, currentPath) : currentPath;
+    console.log(`• Test path: ${currentPath}`);
     if (fileExtension.some(extension => currentPath.endsWith(extension))) {
-      // file path
-      fileArray.push(currentPath)
-    } else {
-      // directory path
-      let fileList = listFileWithExtension({ directory: currentPath, extension: fileExtension, ignoreRegex })
-      fileArray = [...fileArray, ...fileList]
-    }
-  })
 
-  fileArray = [...new Set(fileArray)] // remove duplicate enteries.
-  return fileArray
+      fileArray.push(currentPath);
+    } else {
+
+      let fileList = listFileWithExtension({ directory: currentPath, extension: fileExtension, ignoreRegex });
+      fileArray = [...fileArray, ...fileList];
+    }
+  });
+
+  fileArray = [...new Set(fileArray)];
+  return fileArray;
 }
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NvdXJjZS9sb29rdXAuanMiXSwibmFtZXMiOlsibGlzdENvbnRlbnQiLCJkaXIiLCJmaWxlbGlzdCIsIm9wdGlvbiIsIkFycmF5IiwiaXNBcnJheSIsImRpcmVjdG9yeVBhdGgiLCJjb25jYXQiLCJsaXN0Q29udGVudFNpbmdsZUNvbnRlbnQiLCJyZWN1cnNpdmUiLCJmaWxlc3lzdGVtIiwiZXhpc3RzU3luYyIsInJlYWRkaXJTeW5jIiwiZm9yRWFjaCIsImNvbnRlbnQiLCJzdGF0U3luYyIsInBhdGgiLCJqb2luIiwiaXNEaXJlY3RvcnkiLCJwdXNoIiwibGlzdEZpbGVSZWN1cnNpdmVseSIsImRpcmVjdG9yeSIsImlnbm9yZVJlZ2V4IiwiUmVnRXhwIiwicmVzdWx0cyIsImxpc3QiLCJmaWxlbmFtZSIsImZpbGVwYXRoIiwic2hvdWxkSWdub3JlIiwic29tZSIsInJlZ2V4IiwibWF0Y2giLCJzdGF0IiwiZXJyb3IiLCJuYW1lIiwibGlzdEZpbGVXaXRoRXh0ZW5zaW9uIiwiZXh0ZW5zaW9uIiwiZmlsdGVyIiwiZmlsZSIsImMxIiwic3VmZml4Iiwic3Vic3RyIiwibGVuZ3RoIiwiYzIiLCJyZWR1Y2UiLCJhY2N1bXVsYXRvciIsImN1cnJlbnRWYWx1ZSIsInJlc29sdmVBbmRMb29rdXBGaWxlIiwicGF0aEFycmF5IiwiYmFzZVBhdGgiLCJmaWxlRXh0ZW5zaW9uIiwiU2V0IiwiaWdub3JlIiwiaW5wdXRQYXRoIiwiaW5jbHVkZXMiLCJtYXAiLCJpdGVtIiwiY29uc29sZSIsImxvZyIsIkpTT04iLCJzdHJpbmdpZnkiLCJmaWxlQXJyYXkiLCJjdXJyZW50UGF0aCIsImlzQWJzb2x1dGUiLCJlbmRzV2l0aCIsImZpbGVMaXN0Il0sIm1hcHBpbmdzIjoicVpBQUE7QUFDQTs7Ozs7O0FBTU8sTUFBTUEsV0FBVyxHQUFHLENBQUM7QUFDMUJDLEVBQUFBLEdBRDBCO0FBRTFCQyxFQUFBQSxRQUFRLEdBQUcsRUFGZTtBQUcxQkMsRUFBQUEsTUFIMEI7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QUFTLEdBQUcsQ0FBQyxHQUFHQSxTQUFKLEVBQWUsR0FBR0ksUUFBbEIsQ0FBWjtBQUNEO0FBQ0YsR0FYRDs7QUFhQUosRUFBQUEsU0FBUyxHQUFHLENBQUMsR0FBRyxJQUFJVixHQUFKLENBQVFVLFNBQVIsQ0FBSixDQUFaO0FBQ0EsU0FBT0EsU0FBUDtBQUNEIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IGZpbGVzeXN0ZW0gZnJvbSAnZnMnXG5pbXBvcnQgcGF0aCBmcm9tICdwYXRoJ1xuaW1wb3J0IGFzc2VydCBmcm9tICdhc3NlcnQnXG5cbi8qKiBnZXQgZGlyZWNvdHJ5IGNvbnRlbnRzIGxpc3QgXG4gQHJldHVybiBhcnJheSBvZiBmaWxlcyB0aGF0IGV4aXN0IGluIGEgZGlyZWN0b3J5LiBcbiAqL1xuZXhwb3J0IGNvbnN0IGxpc3RDb250ZW50ID0gKHtcbiAgZGlyLCAvLyBzaW5nbGUgcGF0aCBvciBhcnJheSBvZiBkaXJlY3RvcnkgcGF0aHMuXG4gIGZpbGVsaXN0ID0gW10sXG4gIG9wdGlvbixcbn0gPSB7fSkgPT4ge1xuICBpZiAoIUFycmF5LmlzQXJyYXkoZGlyKSkgZGlyID0gW2Rpcl0gLy8gaW4gY2FzZSBhIHNpbmdsZSBzdHJpbmcsIGNvbnZlcnQgaXQgdG8gYXJyYXkgdG8gd29yayB3aXRoIHRoZSBmdW5jdGlvbi5cblxuICBmb3IgKGxldCBkaXJlY3RvcnlQYXRoIG9mIGRpcikge1xuICAgIGZpbGVsaXN0ID0gZmlsZWxpc3QuY29uY2F0KGxpc3RDb250ZW50U2luZ2xlQ29udGVudCh7IGRpcmVjdG9yeVBhdGgsIG9wdGlvbiB9KSlcbiAgfVxuXG4gIHJldHVybiBmaWxlbGlzdFxufVxuXG5leHBvcnQgZnVuY3Rpb24gbGlzdENvbnRlbnRTaW5nbGVDb250ZW50KHtcbiAgZGlyZWN0b3J5UGF0aCxcbiAgZmlsZWxpc3QgPSBbXSxcbiAgb3B0aW9uID0ge1xuICAgIHJlY3Vyc2l2ZTogZmFsc2UsXG4gIH0sXG59KSB7XG4gIGlmICghZmlsZXN5c3RlbS5leGlzdHNTeW5jKGRpcmVjdG9yeVBhdGgpKSByZXR1cm4gZmlsZWxpc3RcbiAgZmlsZXN5c3RlbS5yZWFkZGlyU3luYyhkaXJlY3RvcnlQYXRoKS5mb3JFYWNoKGNvbnRlbnQgPT4ge1xuICAgIGlmIChvcHRpb24ucmVjdXJzaXZlKSB7XG4gICAgICBmaWxlbGlzdCA9IGZpbGVzeXN0ZW0uc3RhdFN5bmMocGF0aC5qb2luKGRpcmVjdG9yeVBhdGgsIGNvbnRlbnQpKS5pc0RpcmVjdG9yeSgpID8gbGlzdENvbnRlbnQocGF0aC5qb2luKGRpcmVjdG9yeVBhdGgsIGNvbnRlbnQpLCBmaWxlbGlzdCkgOiBmaWxlbGlzdC5wdXNoKGNvbnRlbnQpXG4gICAgfSBlbHNlIHtcbiAgICAgIGZpbGVsaXN0LnB1c2goY29udGVudClcbiAgICB9XG4gIH0pXG4gIHJldHVybiBmaWxlbGlzdFxufVxuXG4vLyByZXR1cm5zIGFsbCBmaWxlcyBpbiBuZXN0ZWQgZGlyZWN0b3J5LlxuZXhwb3J0IGZ1bmN0aW9uIGxpc3RGaWxlUmVjdXJzaXZlbHkoeyBkaXJlY3RvcnksIGlnbm9yZVJlZ2V4ID0gW25ldyBSZWdFeHAoL25vZGVfbW9kdWxlcy8pLCBuZXcgUmVnRXhwKC8uZ2l0LyldIH0pIHtcbiAgbGV0IHJlc3VsdHMgPSBbXVxuICBsZXQgbGlzdCA9IGZpbGVzeXN0ZW0ucmVhZGRpclN5bmMoZGlyZWN0b3J5KVxuICBsaXN0LmZvckVhY2goZmlsZW5hbWUgPT4ge1xuICAgIGxldCBmaWxlcGF0aCA9IHBhdGguam9pbihkaXJlY3RvcnksIGZpbGVuYW1lKVxuICAgIC8vIGNoZWNrIGlmIHRoZSBwYXRoIHNob3VsZCBiZSBpZ25vcmVkXG4gICAgbGV0IHNob3VsZElnbm9yZSA9IGlnbm9yZVJlZ2V4LnNvbWUocmVnZXggPT4ge1xuICAgICAgcmV0dXJuIGZpbGVwYXRoLm1hdGNoKHJlZ2V4KVxuICAgIH0pXG4gICAgaWYgKHNob3VsZElnbm9yZSkgcmV0dXJuXG4gICAgbGV0IHN0YXRcbiAgICB0cnkge1xuICAgICAgc3RhdCA9IGZpbGVzeXN0ZW0uc3RhdFN5bmMoZmlsZXBhdGgpXG4gICAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICAgIHJldHVybiAvLyBza2lwIGl0ZXJhdGlvbiBvbiBmYWlsZWQgc2VhY2hlcy5cbiAgICB9XG4gICAgaWYgKHN0YXQgJiYgc3RhdC5pc0RpcmVjdG9yeSgpKSByZXN1bHRzID0gcmVzdWx0cy5jb25jYXQobGlzdEZpbGVSZWN1cnNpdmVseSh7IGRpcmVjdG9yeTogZmlsZXBhdGggfSkpXG4gICAgZWxzZSByZXN1bHRzLnB1c2goeyBuYW1lOiBmaWxlbmFtZSwgcGF0aDogZmlsZXBhdGggfSkgLy8gY3JlYXRlIG9iamVjdFxuICB9KVxuICByZXR1cm4gcmVzdWx0c1xufVxuXG4vLyBpbnRlcmZhY2UgZm9yIGxpc3RGaWVSZWN1c2l2ZWx5IGZ1bmN0aW9uIHRoYXQgcmV0dXJucyBhbiBhcnJheSBvZiBmaWxlIHBhdGhzLCBhbmQgZmlsdGVycyBmaWxlcyB3aXRoIHRoZSBzcGVjaWZpZWQgZXh0ZW5zaW9uLlxuZXhwb3J0IGZ1bmN0aW9uIGxpc3RGaWxlV2l0aEV4dGVuc2lvbih7IGRpcmVjdG9yeSwgZXh0ZW5zaW9uID0gW10sIGlnbm9yZVJlZ2V4ID0gW10gfSkge1xuICBpZiAoIUFycmF5LmlzQXJyYXkoZXh0ZW5zaW9uKSkgZXh0ZW5zaW9uID0gW2V4dGVuc2lvbl0gLy8gc3VwcG9ydCBhcnJheSBvciBzdHJpbmdcbiAgcmV0dXJuIGxpc3RGaWxlUmVjdXJzaXZlbHkoeyBkaXJlY3RvcnkgfSlcbiAgICAuZmlsdGVyKGZpbGUgPT4ge1xuICAgICAgbGV0IGMxID0gZXh0ZW5zaW9uLnNvbWUoc3VmZml4ID0+IGZpbGUubmFtZS5zdWJzdHIoLXN1ZmZpeC5sZW5ndGgpID09PSBzdWZmaXgpIC8vIE9ubHkga2VlcCB0aGUgZmlsZXMgd2l0aCB0aGUgZXh0ZW5zaW9uXG4gICAgICBsZXQgYzIgPSBpZ25vcmVSZWdleC5zb21lKHJlZ2V4ID0+IGZpbGUucGF0aC5tYXRjaChyZWdleCkpIC8vIGZpbHRlciBmaWxlcyBtYXRjaGluZyBpZ25vcmUgcmVnZXhcbiAgICAgIHJldHVybiBjMSAmJiAhYzJcbiAgICB9KVxuICAgIC5yZWR1Y2UoKGFjY3VtdWxhdG9yLCBjdXJyZW50VmFsdWUpID0+IHtcbiAgICAgIGFjY3VtdWxhdG9yLnB1c2goY3VycmVudFZhbHVlLnBhdGgpXG4gICAgICByZXR1cm4gYWNjdW11bGF0b3JcbiAgICB9LCBbXSlcbn1cblxuLyoqIFJlc29sdmUgdGVzdCBmaWxlIHBhdGhzIGZyb20gYSBsaXN0IG9mIGRpcmVjb3R5ciBhbmQgZmlsZSBwYXRocyAqL1xuZXhwb3J0IGZ1bmN0aW9uIHJlc29sdmVBbmRMb29rdXBGaWxlKHtcbiAgcGF0aEFycmF5IC8qKiByZWxhdGl2ZSBvciBhYnNvbHV0ZSBwYXRocyAqLyxcbiAgYmFzZVBhdGggLyoqIHRoZSBiYXNlIHBhdGggZm9yIHJlbGF0aXZlIHBhdGhzICovLFxuICBmaWxlRXh0ZW5zaW9uLFxuICBpZ25vcmVSZWdleCA9IFtwYXRoLmpvaW4oYmFzZVBhdGgsICd0ZW1wb3JhcnknKSwgcGF0aC5qb2luKGJhc2VQYXRoLCAnZGlzdHJpYnV0aW9uJyldIC8qY2FuIGNvbnRhaW4gcmVnZXggb3IgcGF0aHMqLyxcbn0pIHtcbiAgcGF0aEFycmF5ID0gWy4uLm5ldyBTZXQocGF0aEFycmF5KV0gLy8gcmVtb3ZlIGR1cGxpY2F0ZSBlbnRlcmllcy5cblxuICAvLyBpZ25vcmUgdGVtcG9yYXJ5IHRyYW5zcGlsYXRpb24gZmlsZXMgdG8gcHJldmVudCB3YXRjaCBldmVudCBlbWlzc2lvbiBsb29wIHdoZW4gaW5zcGVjdG9yIGRlYnVnZ2luZyBhbmQgYXV0byBhdHRhY2ggZm9yIGRlYnVnZ2VyLlxuICAvLyBUT0RPOiBSZWFkIC5pZ25vcmUgZmlsZXMgYW5kIGlnbm9yZSB0aGVtIGluIHRoZSB3YXRjaCBsaXN0IHRvIHByZXZlbnQgY2hhbmdlIGNhbGxiYWNrIHRyaWdnZXJpbmcuXG4gIGlnbm9yZVJlZ2V4ID0gaWdub3JlUmVnZXhcbiAgICAvLyBUT0RPOiB2ZXJpZnkgcmVnZXggbm90IGlnbm9yaW5nIGZpbGVzIGl0IHN1cHBvc2VkIHRvIGtlZXAgYW5kIGlnbm9yaW5nIG90aGVycy5cbiAgICAuZmlsdGVyKGlnbm9yZSA9PiAhcGF0aEFycmF5LnNvbWUoaW5wdXRQYXRoID0+IGlucHV0UGF0aC5pbmNsdWRlcyhpZ25vcmUpKSkgLy8gcHJldmVudCBpZ29ucmluZyBmaWxlcyBwcm92aWRlZCBhcyBpbnB1dCB0aGF0IGFyZSBzdXBwb3NlZCB0byBiZSBhZGRlZCBhbmQgbG9va2VkdXBcbiAgICAubWFwKGl0ZW0gPT4gKGl0ZW0gaW5zdGFuY2VvZiBSZWdFeHAgPyBpdGVtIDogbmV3IFJlZ0V4cChgJHtpdGVtfWApKSkgLy8gY3JlYXRlIHJlZ2V4IGZyb20gcGF0aHNcblxuICAvKiBMaXN0IGFsbCBmaWxlcyBpbiBhIGRpcmVjdG9yeSByZWN1cnNpdmVseSAqL1xuICBjb25zb2xlLmxvZyhg4oCiIFNlYXJjaGluZyBmb3IgJHtKU09OLnN0cmluZ2lmeShmaWxlRXh0ZW5zaW9uKX0gZXh0ZW5zaW9uIGZpbGVzLCBpbiBwYXRoICR7SlNPTi5zdHJpbmdpZnkocGF0aEFycmF5KX0uYClcbiAgbGV0IGZpbGVBcnJheSA9IFtdXG4gIHBhdGhBcnJheS5mb3JFYWNoKGN1cnJlbnRQYXRoID0+IHtcbiAgICBjdXJyZW50UGF0aCA9ICFwYXRoLmlzQWJzb2x1dGUoY3VycmVudFBhdGgpID8gcGF0aC5qb2luKGJhc2VQYXRoLCBjdXJyZW50UGF0aCkgOiBjdXJyZW50UGF0aCAvLyByZXNvbHZlIHRvIGFic29sdXRlIHBhdGhcbiAgICBjb25zb2xlLmxvZyhg4oCiIFRlc3QgcGF0aDogJHtjdXJyZW50UGF0aH1gKVxuICAgIGlmIChmaWxlRXh0ZW5zaW9uLnNvbWUoZXh0ZW5zaW9uID0+IGN1cnJlbnRQYXRoLmVuZHNXaXRoKGV4dGVuc2lvbikpKSB7XG4gICAgICAvLyBmaWxlIHBhdGhcbiAgICAgIGZpbGVBcnJheS5wdXNoKGN1cnJlbnRQYXRoKVxuICAgIH0gZWxzZSB7XG4gICAgICAvLyBkaXJlY3RvcnkgcGF0aFxuICAgICAgbGV0IGZpbGVMaXN0ID0gbGlzdEZpbGVXaXRoRXh0ZW5zaW9uKHsgZGlyZWN0b3J5OiBjdXJyZW50UGF0aCwgZXh0ZW5zaW9uOiBmaWxlRXh0ZW5zaW9uLCBpZ25vcmVSZWdleCB9KVxuICAgICAgZmlsZUFycmF5ID0gWy4uLmZpbGVBcnJheSwgLi4uZmlsZUxpc3RdXG4gICAgfVxuICB9KVxuXG4gIGZpbGVBcnJheSA9IFsuLi5uZXcgU2V0KGZpbGVBcnJheSldIC8vIHJlbW92ZSBkdXBsaWNhdGUgZW50ZXJpZXMuXG4gIHJldHVybiBmaWxlQXJyYXlcbn1cbiJdfQ==
