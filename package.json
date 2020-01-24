@@ -6,7 +6,11 @@
 		"buildAndRelease": "yarn run scriptManager shouldCompileScript=true @deployment/deploymentScript \".buildAndRelease.moduleProject({})\"",
 		"build": "yarn run scriptManager shouldCompileScript=true @deployment/deploymentScript \".buildSourceCode.moduleProject({}, {compile:[/**'./test'*/]})\""
 	},
-	"dependencies": {},
+	"dependencies": {
+		"glob": "^7.1.6",
+		"glob-stream": "^6.1.0",
+		"globby": "^11.0.0"
+	},
 	"devDependencies": {
 		"@deployment/deploymentScript": "https://github.com/AppScriptIO/deploymentScript#semver:^2.x.x",
 		"@deployment/javascriptStaticAnalysis": "https://github.com/AppScriptIO/javascriptStaticAnalysis#semver:^2.x.x",

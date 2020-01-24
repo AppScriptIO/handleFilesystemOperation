@@ -1,6 +1,11 @@
 import filesystem from 'fs'
 import path from 'path'
 import assert from 'assert'
+import util from 'util'
+import _wildcardPathnameMatcher from 'glob' // Alternative modules - `globby`, `glob`, `glob-stream`
+const wildcardPathnameMatcher = util.promisify(_wildcardPathnameMatcher)
+// Multiple patterns are represented in globs as `{pattern1, pattern2, pattern3}`
+const convertArrayToMultiplePatternGlob = array => (array.length > 1 ? `{${array.join(',')}}` : array[0])
 
 /** get direcotry contents list 
  @return array of files that exist in a directory. 
@@ -77,7 +82,7 @@ export function listFileWithExtension({ directory, extension = [], ignoreRegex =
 
 /** Resolve test file paths from a list of direcotyr and file paths */
 export function resolveAndLookupFile({
-  pathArray /** relative or absolute paths */,
+  pathArray /** relative or absolute paths - files and folders */,
   basePath /** the base path for relative paths */,
   fileExtension,
   ignoreRegex = [path.join(basePath, 'temporary'), path.join(basePath, 'distribution')] /*can contain regex or paths*/,
@@ -109,4 +114,36 @@ export function resolveAndLookupFile({
 
   fileArray = [...new Set(fileArray)] // remove duplicate enteries.
   return fileArray
+}
+
+// Example
+// await findFileByGlobPattern({
+//   basePath: clientSideBasePath,
+//   patternGlob: ['**/*.js', '**/*.css', '**/*.html'],
+//   ignore: [`**/{@package*/**/*,temporary/**/*,.git/**/*,node_modules/**/*}`].map(item => path.join(clientSideBasePath, item)),
+// })
+export async function findFileByGlobPattern({
+  patternGlob = [
+    // examples - TODO: there is an issue when specifying multiple paths, for some reason it doesn't watch all files when separately configured, while watching all files without distinction is possible. Maybe an issue with glob strings
+    // '/**/webcomponent/@package/@polymer/**/*.js'
+    // `./node_modules/appscript{/**/*.js,!/node_modules/**/*}.js`,
+    // '!' + `./node_modules{,/**/*,!/appscript/**/*}.js`,
+    // '!' + `./node_modules/appscript/node_modules{,/**/*}.js`,
+    // '!' + `{,node_modules,node_modules/**/*}`,
+    // '!' + './clientSide/**/node_modules/**/*',
+    // '!' + `./clientSide/**/component.package/**/*`,
+    // '!' + `./clientSide/**/js.package.yarn/**/*`,
+  ],
+  ignore = [`**/{temporary/**/*,.git/**/*,node_modules/**/*}`],
+  basePath /**The current working directory in which to search */,
+}) {
+  patternGlob = patternGlob |> convertArrayToMultiplePatternGlob // as the first argument must be a string.
+
+  let fileList = await wildcardPathnameMatcher(patternGlob, {
+    cwd: basePath,
+    absolute: true /*always receive absolute paths*/,
+    ignore,
+  })
+
+  return fileList
 }
