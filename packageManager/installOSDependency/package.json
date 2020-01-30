@@ -3,7 +3,7 @@
     "main": ".",
     "version": "0.0.0",
     "scripts": {
-        "preinstall": "echo '• Running script for installing OS dependencies...'; node --eval \"let provision = require('@deployment/deploymentProvisioning'); provision.rsync.install()\""
+        "preinstall": "echo '• Running script for installing OS dependencies...'; node --eval \"let provision = require('@deployment/deploymentProvisioning'); provision.rsync.install({shouldThrow: false})\""
     },
     "dependencies": {}
 }
