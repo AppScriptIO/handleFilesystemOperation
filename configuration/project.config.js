@@ -16,6 +16,9 @@ const ownConfig = {
     get script() {
       return path.join(ownConfig.directory.root, './script')
     },
+    get packageManager() {
+      return path.join(ownConfig.directory.root, './packageManager')
+    },
   },
   get script() {
     return [...script, ...[{ type: 'directory', path: ownConfig.directory.script }]]
@@ -32,7 +35,7 @@ const ownConfig = {
   },
   build: {
     get compile() {
-      return [path.relative(ownConfig.directory.root, ownConfig.directory.source)]
+      return [path.relative(ownConfig.directory.root, ownConfig.directory.source), path.relative(ownConfig.directory.root, ownConfig.directory.packageManager)]
     },
     repositoryURL: 'https://github.com/AppScriptIO/handleFilesystemOperation',
   },

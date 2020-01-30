@@ -3,11 +3,17 @@
 	"version": "2.0.5",
 	"main": "./entrypoint/programmaticAPI",
 	"scripts": {
+		"upgrade": "echo '• Upgrading also workspaces'; yarn workspaces run upgrade",
+		"postinstall": "yarn workspaces run install # always install workspaces, even as a when this module is used as a dependency",
 		"buildAndRelease": "yarn run scriptManager shouldCompileScript=true @deployment/deploymentScript \".buildAndRelease.moduleProject({})\"",
 		"build": "yarn run scriptManager shouldCompileScript=true @deployment/deploymentScript \".buildSourceCode.moduleProject({}, {compile:[/**'./test'*/]})\""
 	},
+	"workspaces": [
+		"./packageManager/*"
+	],
+	"private": true,
 	"dependencies": {
-		"any-promise": "*",
+		"@deployment/deploymentProvisioning": "https://github.com/AppScriptIO/deploymentProvisioning#semver:^2.x.x",
 		"glob": "^7.1.6",
 		"glob-stream": "^6.1.0",
 		"globby": "^11.0.0",
@@ -20,7 +26,6 @@
 		"vinyl-fs": "*"
 	},
 	"devDependencies": {
-		"@deployment/deploymentProvisioning": "https://github.com/AppScriptIO/deploymentProvisioning#semver:^2.x.x",
 		"@deployment/deploymentScript": "https://github.com/AppScriptIO/deploymentScript#semver:^2.x.x",
 		"@deployment/javascriptStaticAnalysis": "https://github.com/AppScriptIO/javascriptStaticAnalysis#semver:^2.x.x",
 		"@deployment/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation#semver:^2.x.x",
