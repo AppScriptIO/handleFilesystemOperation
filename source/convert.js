@@ -1,11 +1,12 @@
-import upath from 'upath'
-import slash from 'slash' // convert backward Windows slash to Unix/Windows supported forward slash.
-const windowsDriveLetterRegex = new RegExp('^([a-z]?)([A-Z]?):')
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.convertWindowsPathToUnix = convertWindowsPathToUnix;var _upath = _interopRequireDefault(require("upath"));
 
-export function convertWindowsPathToUnix({ path }) {
-  path = upath.normalize(path) // convert slashes to Unix.
+const windowsDriveLetterRegex = new RegExp('^([a-z]?)([A-Z]?):');
+
+function convertWindowsPathToUnix({ path }) {
+  path = _upath.default.normalize(path);
   let driveLetterArray = windowsDriveLetterRegex.exec(path),
-    driveLetter = driveLetterArray ? driveLetterArray[0] : false
-  path = driveLetter ? path.replace(driveLetter, `/${driveLetter.slice(0, 1)}`) : path // remove ':' from drive letter and add a slash at the beginning.
-  return path
+  driveLetter = driveLetterArray ? driveLetterArray[0] : false;
+  path = driveLetter ? path.replace(driveLetter, `/${driveLetter.slice(0, 1)}`) : path;
+  return path;
 }
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NvdXJjZS9jb252ZXJ0LmpzIl0sIm5hbWVzIjpbIndpbmRvd3NEcml2ZUxldHRlclJlZ2V4IiwiUmVnRXhwIiwiY29udmVydFdpbmRvd3NQYXRoVG9Vbml4IiwicGF0aCIsInVwYXRoIiwibm9ybWFsaXplIiwiZHJpdmVMZXR0ZXJBcnJheSIsImV4ZWMiLCJkcml2ZUxldHRlciIsInJlcGxhY2UiLCJzbGljZSJdLCJtYXBwaW5ncyI6IjROQUFBOztBQUVBLE1BQU1BLHVCQUF1QixHQUFHLElBQUlDLE1BQUosQ0FBVyxvQkFBWCxDQUFoQzs7QUFFTyxTQUFTQyx3QkFBVCxDQUFrQyxFQUFFQyxJQUFGLEVBQWxDLEVBQTRDO0FBQ2pEQSxFQUFBQSxJQUFJLEdBQUdDLGVBQU1DLFNBQU4sQ0FBZ0JGLElBQWhCLENBQVA7QUFDQSxNQUFJRyxnQkFBZ0IsR0FBR04sdUJBQXVCLENBQUNPLElBQXhCLENBQTZCSixJQUE3QixDQUF2QjtBQUNFSyxFQUFBQSxXQUFXLEdBQUdGLGdCQUFnQixHQUFHQSxnQkFBZ0IsQ0FBQyxDQUFELENBQW5CLEdBQXlCLEtBRHpEO0FBRUFILEVBQUFBLElBQUksR0FBR0ssV0FBVyxHQUFHTCxJQUFJLENBQUNNLE9BQUwsQ0FBYUQsV0FBYixFQUEyQixJQUFHQSxXQUFXLENBQUNFLEtBQVosQ0FBa0IsQ0FBbEIsRUFBcUIsQ0FBckIsQ0FBd0IsRUFBdEQsQ0FBSCxHQUE4RFAsSUFBaEY7QUFDQSxTQUFPQSxJQUFQO0FBQ0QiLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgdXBhdGggZnJvbSAndXBhdGgnXG5pbXBvcnQgc2xhc2ggZnJvbSAnc2xhc2gnIC8vIGNvbnZlcnQgYmFja3dhcmQgV2luZG93cyBzbGFzaCB0byBVbml4L1dpbmRvd3Mgc3VwcG9ydGVkIGZvcndhcmQgc2xhc2guXG5jb25zdCB3aW5kb3dzRHJpdmVMZXR0ZXJSZWdleCA9IG5ldyBSZWdFeHAoJ14oW2Etel0/KShbQS1aXT8pOicpXG5cbmV4cG9ydCBmdW5jdGlvbiBjb252ZXJ0V2luZG93c1BhdGhUb1VuaXgoeyBwYXRoIH0pIHtcbiAgcGF0aCA9IHVwYXRoLm5vcm1hbGl6ZShwYXRoKSAvLyBjb252ZXJ0IHNsYXNoZXMgdG8gVW5peC5cbiAgbGV0IGRyaXZlTGV0dGVyQXJyYXkgPSB3aW5kb3dzRHJpdmVMZXR0ZXJSZWdleC5leGVjKHBhdGgpLFxuICAgIGRyaXZlTGV0dGVyID0gZHJpdmVMZXR0ZXJBcnJheSA/IGRyaXZlTGV0dGVyQXJyYXlbMF0gOiBmYWxzZVxuICBwYXRoID0gZHJpdmVMZXR0ZXIgPyBwYXRoLnJlcGxhY2UoZHJpdmVMZXR0ZXIsIGAvJHtkcml2ZUxldHRlci5zbGljZSgwLCAxKX1gKSA6IHBhdGggLy8gcmVtb3ZlICc6JyBmcm9tIGRyaXZlIGxldHRlciBhbmQgYWRkIGEgc2xhc2ggYXQgdGhlIGJlZ2lubmluZy5cbiAgcmV0dXJuIHBhdGhcbn1cbiJdfQ==
