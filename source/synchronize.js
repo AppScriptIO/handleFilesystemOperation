@@ -2,12 +2,11 @@ import path from 'path'
 import util from 'util'
 import stream from 'stream'
 const pipeline = util.promisify(stream.pipeline)
-import mkdirp from 'mkdirp'
+import { sync as mkdirp } from 'mkdirp'
 import Rsync from 'rsync'
 import size from 'gulp-size'
 import plumber from 'gulp-plumber'
 import { src as readFileAsObjectStream, dest as writeFileFromObjectStream } from 'vinyl-fs'
-import { reject } from 'any-promise'
 
 /*
 import rsyncObjectStream from 'gulp-rsync'
@@ -44,8 +43,8 @@ export function recursivelySyncFile({
 } = {}) {
   // deal with trailing slash as it may change `rsync` behavior.
   destination = destination.replace(/\/$/, '') // remove trailing slash from `destination` as it has no effect (both cases are the same)
-  if (copyContentOnly) source = source.substr(-1) != '/' ? `${source}/` : source
   // add trailing slash - as rsync will copy only contants when trailing slash is present.
+  if (copyContentOnly) source = source.substr(-1) != '/' ? `${source}/` : source
   else source.replace(/\/$/, '') // remove trailing slash.
 
   let options = Object.assign(
@@ -67,20 +66,21 @@ export function recursivelySyncFile({
     .destination(destination)
 
   // Create directory.
-  return new Promise(resolve => {
-    mkdirp(destination, function(err) {
-      // Execute the command
-      rsync.execute(
-        function(error, code, cmd) {
-          if (error) reject(error)
-          console.log(`• RSync ${source} to ${destination}`)
-          resolve()
-        },
-        function(data) {
-          console.log(' ' + data)
-        },
-      )
-    })
+  return new Promise((resolve, reject) => {
+    mkdirp(destination)
+
+    // Execute the command
+    let rsyncChildProcess = rsync.execute(
+      function(error, code, cmd) {
+        console.log(`• command executed: "${cmd}"`)
+        if (error) reject(error)
+        console.log(`• RSync ${source} to ${destination}`)
+        resolve()
+      },
+      function(data) {
+        console.log(' ' + data)
+      },
+    )
   })
 }
 
