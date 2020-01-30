@@ -974,11 +974,11 @@
     underscore "^1.9.1"
 
 "@dependency/handleFilesystemOperation@http://github.com/AppScriptIO/handleFilesystemOperation#semver:^2.x.x":
-  version "2.0.4"
-  uid "6f5e3b18aa1862a49aca98085c2ac29448ca083e"
-  resolved "http://github.com/AppScriptIO/handleFilesystemOperation#6f5e3b18aa1862a49aca98085c2ac29448ca083e"
+  version "2.0.6"
+  uid a227ffd49705bdc9c314b7acf4640653ed36bc5a
+  resolved "http://github.com/AppScriptIO/handleFilesystemOperation#a227ffd49705bdc9c314b7acf4640653ed36bc5a"
   dependencies:
-    any-promise "*"
+    "@deployment/deploymentProvisioning" "https://github.com/AppScriptIO/deploymentProvisioning#semver:^2.x.x"
     glob "^7.1.6"
     glob-stream "^6.1.0"
     globby "^11.0.0"
@@ -991,10 +991,10 @@
     vinyl-fs "*"
 
 "@dependency/handleFilesystemOperation@https://github.com/AppScriptIO/handleFilesystemOperation#semver:^2.x.x", "@deployment/handleFilesystemOperation@https://github.com/AppScriptIO/handleFilesystemOperation#semver:^2.x.x":
-  version "2.0.4"
-  resolved "https://github.com/AppScriptIO/handleFilesystemOperation#6f5e3b18aa1862a49aca98085c2ac29448ca083e"
+  version "2.0.6"
+  resolved "https://github.com/AppScriptIO/handleFilesystemOperation#a227ffd49705bdc9c314b7acf4640653ed36bc5a"
   dependencies:
-    any-promise "*"
+    "@deployment/deploymentProvisioning" "https://github.com/AppScriptIO/deploymentProvisioning#semver:^2.x.x"
     glob "^7.1.6"
     glob-stream "^6.1.0"
     globby "^11.0.0"
@@ -1040,8 +1040,8 @@
   resolved "https://github.com/AppScriptIO/promiseProperRace#a1ceb5ff9707b78e2d72876955c23f829a0830d5"
 
 "@deployment/buildTool@https://github.com/AppScriptIO/buildTool#semver:^2.x.x":
-  version "2.2.2"
-  resolved "https://github.com/AppScriptIO/buildTool#de6a9a2f04d53bfe93ca29f0f3f9d6072a9ddf78"
+  version "2.3.2"
+  resolved "https://github.com/AppScriptIO/buildTool#5dd9c6d4382aaf5fdbf7af76789bc015d84534ed"
   dependencies:
     "@dependency/fragmentIndentationObjectStream" "https://github.com/AppScriptIO/fragmentIndentationObjectStream#semver:^1.x.x"
     "@dependency/graphTraversal" "https://github.com/AppScriptIO/graphTraversal#semver:4.x.x"
@@ -1090,8 +1090,8 @@
   resolved "https://github.com/AppScriptIO/configurationManagement#f325be4c7d3b09c0f0bfcb228e1358ff23d6cff2"
 
 "@deployment/deploymentProvisioning@https://github.com/AppScriptIO/deploymentProvisioning#semver:^2.x.x":
-  version "2.1.1"
-  resolved "https://github.com/AppScriptIO/deploymentProvisioning#bfa40af5e602131627634be8c37f31f9e7774758"
+  version "2.1.2"
+  resolved "https://github.com/AppScriptIO/deploymentProvisioning#bcad4599e3c594db2358708ab275f2f93592e59b"
   dependencies:
     command-exists "*"
     is-wsl "*"
@@ -1099,8 +1099,8 @@
     which "*"
 
 "@deployment/deploymentScript@https://github.com/AppScriptIO/deploymentScript#semver:^2.x.x":
-  version "2.2.4"
-  resolved "https://github.com/AppScriptIO/deploymentScript#0c23045a11a87f06279971f9dfe4315ce02d19b8"
+  version "2.2.5"
+  resolved "https://github.com/AppScriptIO/deploymentScript#ff1a906bea66a5ffdb467b4f7091ac9bb9a1c476"
   dependencies:
     "@dependency/entity" "https://github.com/AppScriptIO/entity#semver:^2.x.x"
     "@dependency/graphTraversal" "https://github.com/AppScriptIO/graphTraversal#semver:^4.x.x"
@@ -1160,8 +1160,8 @@
     sinon "*"
 
 "@deployment/javascriptTranspilation@https://github.com/AppScriptIO/javascriptTranspilation#semver:^2.x.x":
-  version "2.4.1"
-  resolved "https://github.com/AppScriptIO/javascriptTranspilation#ce2c5cfa5d9c9ff2b06fcedad82772ae5201c3bb"
+  version "2.4.3"
+  resolved "https://github.com/AppScriptIO/javascriptTranspilation#4e71c2ca19d9afb15b082f9c04eb3643b124b6d6"
   dependencies:
     "@babel/babel-plugin-functionSentProxyImplementation" "https://github.com/AppScriptIO/babel-plugin-functionSentProxyImplementation#semver:^1.x.x"
     "@babel/cli" "*"
@@ -1759,7 +1759,7 @@ ansi-wrap@0.1.0, ansi-wrap@^0.1.0:
   resolved "https://registry.yarnpkg.com/ansi-wrap/-/ansi-wrap-0.1.0.tgz#a82250ddb0015e9a27ca82e82ea603bbfa45efaf"
   integrity sha1-qCJQ3bABXponyoLoLqYDu/pF768=
 
-any-promise@*, any-promise@^1.0.0:
+any-promise@^1.0.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/any-promise/-/any-promise-1.3.0.tgz#abc6afeedcea52e809cdc0376aed3ce39635d17f"
   integrity sha1-q8av7tzqUugJzcA3au0845Y10X8=
