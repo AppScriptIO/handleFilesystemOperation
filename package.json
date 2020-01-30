@@ -1,26 +1,27 @@
 {
 	"name": "@dependency/handleFilesystemOperation",
-	"version": "2.0.3",
+	"version": "2.0.4",
 	"main": "./entrypoint/programmaticAPI",
 	"scripts": {
 		"buildAndRelease": "yarn run scriptManager shouldCompileScript=true @deployment/deploymentScript \".buildAndRelease.moduleProject({})\"",
 		"build": "yarn run scriptManager shouldCompileScript=true @deployment/deploymentScript \".buildSourceCode.moduleProject({}, {compile:[/**'./test'*/]})\""
 	},
 	"dependencies": {
+		"any-promise": "*",
 		"glob": "^7.1.6",
 		"glob-stream": "^6.1.0",
 		"globby": "^11.0.0",
-		"slash": "^3.0.0",
-		"upath": "^1.2.0",
-		"mkdirp": "*",
-		"rsync": "*",
 		"gulp-plumber": "*",
 		"gulp-size": "*",
-		"any-promise": "*",
+		"mkdirp": "*",
+		"rsync": "*",
+		"slash": "^3.0.0",
+		"upath": "^1.2.0",
 		"vinyl-fs": "*"
 	},
 	"devDependencies": {
-		"@deployment/deploymentScript": "https://github.com/AppScriptIO/deploymentScript#semver:^2.x.x",
+		"@deployment/deploymentProvisioning": "https://github.com/AppScriptIO/deploymentProvisioning#semver:2.0.1",
+		"@deployment/deploymentScript": "https://github.com/AppScriptIO/deploymentScript#semver:2.2.3",
 		"@deployment/javascriptStaticAnalysis": "https://github.com/AppScriptIO/javascriptStaticAnalysis#semver:^2.x.x",
 		"@deployment/javascriptTranspilation": "https://github.com/AppScriptIO/javascriptTranspilation#semver:^2.x.x",
 		"@deployment/scriptManager": "https://github.com/AppScriptIO/scriptManager#semver:^2.x.x",
