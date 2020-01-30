@@ -11,7 +11,13 @@
 		"glob-stream": "^6.1.0",
 		"globby": "^11.0.0",
 		"slash": "^3.0.0",
-		"upath": "^1.2.0"
+		"upath": "^1.2.0",
+		"mkdirp": "*",
+		"rsync": "*",
+		"gulp-plumber": "*",
+		"gulp-size": "*",
+		"any-promise": "*",
+		"vinyl-fs": "*"
 	},
 	"devDependencies": {
 		"@deployment/deploymentScript": "https://github.com/AppScriptIO/deploymentScript#semver:^2.x.x",

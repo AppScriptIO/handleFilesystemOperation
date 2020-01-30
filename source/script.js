@@ -1,2 +1,7 @@
+export * from './check.js'
+export * from './convert.js'
+export * from './copy.js'
 export * from './create.js'
 export * from './lookup.js'
+export * from './symlink.js'
+export * from './synchronize.js'
