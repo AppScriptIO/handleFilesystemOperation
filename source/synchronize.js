@@ -1,4 +1,5 @@
 import path from 'path'
+import filesystem from 'fs'
 import util from 'util'
 import stream from 'stream'
 const pipeline = util.promisify(stream.pipeline)
@@ -44,13 +45,14 @@ export function recursivelySyncFile({
   // deal with trailing slash as it may change `rsync` behavior.
   destination = destination.replace(/\/$/, '') // remove trailing slash from `destination` as it has no effect (both cases are the same)
   // add trailing slash - as rsync will copy only contants when trailing slash is present.
-  if (copyContentOnly) source = source.substr(-1) != '/' ? `${source}/` : source
-  else source.replace(/\/$/, '') // remove trailing slash.
+  if (copyContentOnly && filesystem.lstatSync(source).isDirectory()) {
+    source = source.substr(-1) != '/' ? `${source}/` : source
+  } else source.replace(/\/$/, '') // remove trailing slash.
 
   let options = Object.assign(
     {
       a: true, // archive
-      // 'v': true, // verbose
+      // v: true, // verbose
       z: true, // compress
       R: false, // relative - will create a nested path inside the destination using the full path of the source folder.
       r: true, // recursive
@@ -60,7 +62,8 @@ export function recursivelySyncFile({
 
   let rsync = new Rsync()
     .flags(options)
-    // .exclude('+ */')
+    .patterns([{ action: '-', pattern: '**/node_modules' }]) // exclude nested node_modules
+    // .exclude('+ */') // +/- patterns https://www.npmjs.com/package/rsync#patternspatterns
     // .include('/tmp/source/**/*')
     .source(source)
     .destination(destination)
