@@ -1,6 +1,6 @@
 {
 	"name": "@dependency/handleFilesystemOperation",
-	"version": "2.0.8",
+	"version": "2.0.9",
 	"main": "./entrypoint/programmaticAPI",
 	"scripts": {
 		"upgrade": "echo '• Upgrading also workspaces'; yarn workspaces run upgrade",
