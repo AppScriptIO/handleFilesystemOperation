@@ -1,7 +1,7 @@
 import { constants as filesystemConstants, promises as filesystem } from 'fs'
 import path from 'path'
 
-export async function recursiveCreateDirectory({ directoryPath }) {
+export async function recursiveCreateDirectory({ directoryPath, shouldThrow = true }) {
   await filesystem
     .mkdir(directoryPath)
     .then(() => console.log(`\tCreated directory root ${directoryPath}`))
@@ -12,7 +12,7 @@ export async function recursiveCreateDirectory({ directoryPath }) {
         return recursiveCreateDirectory({ directoryPath: parentDirectory }) // create parent directory
           .then(() => recursiveCreateDirectory({ directoryPath: directoryPath })) // retry creation of nested directory
       } else {
-        throw error
+        if (shouldThrow) throw error
       }
     })
 }
