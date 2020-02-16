@@ -1,10 +1,10 @@
 {
 	"name": "@dependency/handleFilesystemOperation",
-	"version": "2.0.10",
+	"version": "2.0.11",
 	"main": "./entrypoint/programmaticAPI",
 	"scripts": {
+		"installPeer": "yarn workspaces run install # always install workspaces, even as a when this module is used as a dependency",
 		"upgrade": "echo '• Upgrading also workspaces'; yarn workspaces run upgrade",
-		"postinstall": "yarn workspaces run install # always install workspaces, even as a when this module is used as a dependency",
 		"buildAndRelease": "yarn run scriptManager shouldCompileScript=true @deployment/deploymentScript \".buildAndRelease.moduleProject({})\"",
 		"build": "yarn run scriptManager shouldCompileScript=true @deployment/deploymentScript \".buildSourceCode.moduleProject({}, {compile:[/**'./test'*/]})\""
 	},
@@ -12,6 +12,9 @@
 		"./packageManager/*"
 	],
 	"private": true,
+	"peerDependencies": {
+		"rsync": "*"
+	},
 	"dependencies": {
 		"@deployment/deploymentProvisioning": "https://github.com/AppScriptIO/deploymentProvisioning#semver:^2.x.x",
 		"glob": "^7.1.6",
