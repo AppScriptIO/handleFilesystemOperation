@@ -1,18 +1,19 @@
-import { constants as filesystemConstants, promises as filesystem } from 'fs'
-import path from 'path'
+"use strict";var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");Object.defineProperty(exports, "__esModule", { value: true });exports.recursiveCreateDirectory = recursiveCreateDirectory;var _fs = require("fs");
+var _path = _interopRequireDefault(require("path"));
 
-export async function recursiveCreateDirectory({ directoryPath, shouldThrow = true }) {
-  await filesystem
-    .mkdir(directoryPath)
-    .then(() => console.log(`\tCreated directory root ${directoryPath}`))
-    .catch(error => {
-      if (error.code == 'ENOENT' /* doesn't exist */) {
-        // means that the parent directory doesn't exist
-        let parentDirectory = path.dirname(directoryPath)
-        return recursiveCreateDirectory({ directoryPath: parentDirectory }) // create parent directory
-          .then(() => recursiveCreateDirectory({ directoryPath: directoryPath })) // retry creation of nested directory
+async function recursiveCreateDirectory({ directoryPath, shouldThrow = true }) {
+  await _fs.promises.
+  mkdir(directoryPath).
+  then(() => console.log(`\tCreated directory root ${directoryPath}`)).
+  catch(error => {
+    if (error.code == 'ENOENT') {
+
+        let parentDirectory = _path.default.dirname(directoryPath);
+        return recursiveCreateDirectory({ directoryPath: parentDirectory }).
+        then(() => recursiveCreateDirectory({ directoryPath: directoryPath }));
       } else {
-        if (shouldThrow) throw error
-      }
-    })
+      if (shouldThrow) throw error;
+    }
+  });
 }
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NvdXJjZS9jcmVhdGUuanMiXSwibmFtZXMiOlsicmVjdXJzaXZlQ3JlYXRlRGlyZWN0b3J5IiwiZGlyZWN0b3J5UGF0aCIsInNob3VsZFRocm93IiwiZmlsZXN5c3RlbSIsIm1rZGlyIiwidGhlbiIsImNvbnNvbGUiLCJsb2ciLCJjYXRjaCIsImVycm9yIiwiY29kZSIsInBhcmVudERpcmVjdG9yeSIsInBhdGgiLCJkaXJuYW1lIl0sIm1hcHBpbmdzIjoiNE5BQUE7QUFDQTs7QUFFTyxlQUFlQSx3QkFBZixDQUF3QyxFQUFFQyxhQUFGLEVBQWlCQyxXQUFXLEdBQUcsSUFBL0IsRUFBeEMsRUFBK0U7QUFDcEYsUUFBTUM7QUFDSEMsRUFBQUEsS0FERyxDQUNHSCxhQURIO0FBRUhJLEVBQUFBLElBRkcsQ0FFRSxNQUFNQyxPQUFPLENBQUNDLEdBQVIsQ0FBYSw0QkFBMkJOLGFBQWMsRUFBdEQsQ0FGUjtBQUdITyxFQUFBQSxLQUhHLENBR0dDLEtBQUssSUFBSTtBQUNkLFFBQUlBLEtBQUssQ0FBQ0MsSUFBTixJQUFjLFFBQWxCLEVBQWdEOztBQUU5QyxZQUFJQyxlQUFlLEdBQUdDLGNBQUtDLE9BQUwsQ0FBYVosYUFBYixDQUF0QjtBQUNBLGVBQU9ELHdCQUF3QixDQUFDLEVBQUVDLGFBQWEsRUFBRVUsZUFBakIsRUFBRCxDQUF4QjtBQUNKTixRQUFBQSxJQURJLENBQ0MsTUFBTUwsd0JBQXdCLENBQUMsRUFBRUMsYUFBYSxFQUFFQSxhQUFqQixFQUFELENBRC9CLENBQVA7QUFFRCxPQUxELE1BS087QUFDTCxVQUFJQyxXQUFKLEVBQWlCLE1BQU1PLEtBQU47QUFDbEI7QUFDRixHQVpHLENBQU47QUFhRCIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGNvbnN0YW50cyBhcyBmaWxlc3lzdGVtQ29uc3RhbnRzLCBwcm9taXNlcyBhcyBmaWxlc3lzdGVtIH0gZnJvbSAnZnMnXG5pbXBvcnQgcGF0aCBmcm9tICdwYXRoJ1xuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gcmVjdXJzaXZlQ3JlYXRlRGlyZWN0b3J5KHsgZGlyZWN0b3J5UGF0aCwgc2hvdWxkVGhyb3cgPSB0cnVlIH0pIHtcbiAgYXdhaXQgZmlsZXN5c3RlbVxuICAgIC5ta2RpcihkaXJlY3RvcnlQYXRoKVxuICAgIC50aGVuKCgpID0+IGNvbnNvbGUubG9nKGBcXHRDcmVhdGVkIGRpcmVjdG9yeSByb290ICR7ZGlyZWN0b3J5UGF0aH1gKSlcbiAgICAuY2F0Y2goZXJyb3IgPT4ge1xuICAgICAgaWYgKGVycm9yLmNvZGUgPT0gJ0VOT0VOVCcgLyogZG9lc24ndCBleGlzdCAqLykge1xuICAgICAgICAvLyBtZWFucyB0aGF0IHRoZSBwYXJlbnQgZGlyZWN0b3J5IGRvZXNuJ3QgZXhpc3RcbiAgICAgICAgbGV0IHBhcmVudERpcmVjdG9yeSA9IHBhdGguZGlybmFtZShkaXJlY3RvcnlQYXRoKVxuICAgICAgICByZXR1cm4gcmVjdXJzaXZlQ3JlYXRlRGlyZWN0b3J5KHsgZGlyZWN0b3J5UGF0aDogcGFyZW50RGlyZWN0b3J5IH0pIC8vIGNyZWF0ZSBwYXJlbnQgZGlyZWN0b3J5XG4gICAgICAgICAgLnRoZW4oKCkgPT4gcmVjdXJzaXZlQ3JlYXRlRGlyZWN0b3J5KHsgZGlyZWN0b3J5UGF0aDogZGlyZWN0b3J5UGF0aCB9KSkgLy8gcmV0cnkgY3JlYXRpb24gb2YgbmVzdGVkIGRpcmVjdG9yeVxuICAgICAgfSBlbHNlIHtcbiAgICAgICAgaWYgKHNob3VsZFRocm93KSB0aHJvdyBlcnJvclxuICAgICAgfVxuICAgIH0pXG59XG4iXX0=
